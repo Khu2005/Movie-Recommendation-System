@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
 import string
-import nltk
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer,ENGLISH_STOP_WORDS
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Download stopwords
-nltk.download('stopwords')
+# nltk.download('stopwords')
 
 # Load dataset
 df = pd.read_csv("imdb_top_1000.csv")
