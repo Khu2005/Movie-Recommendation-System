@@ -3,7 +3,7 @@ import pandas as pd
 import string
 import nltk
 from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer,ENGLISH_STOP_WORDS
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Download stopwords
@@ -16,7 +16,7 @@ df = pd.read_csv("imdb_top_1000.csv")
 df['Overview'] = df['Overview'].fillna('')
 
 # Stopwords
-stop_words = set(stopwords.words('english'))
+stop_words = set(ENGLISH_STOP_WORDS)
 
 # Preprocessing Functions
 def convert_to_lowercase(text):
