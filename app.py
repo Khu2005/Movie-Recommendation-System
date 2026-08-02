@@ -53,9 +53,9 @@ def recommend(movie):
 
     similarity = list(enumerate(cosine_sim[movie_index]))
 
-    scores = sorted(scores, key=lambda x: x[1], reverse=True)
+    similarity = sorted(similarity, key=lambda x: x[1], reverse=True)
 
-    scores = scores[1:6]
+    similarity = similarity[1:6]
 
     recommended = []
 
