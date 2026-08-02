@@ -141,7 +141,7 @@ git push -u origin main
 7. Wait for the deployment to complete.
 8. Open the generated Render URL to use the application.
 
-9.RenderLink :-https://movie-recommendation-system-1-vdus.onrender.com/
+9.RenderLink :-https://movie-recommendation-system-2-j3zg.onrender.com
 ## Output
 - Select a movie from the dropdown list.
 - Click the **Recommend** button.
