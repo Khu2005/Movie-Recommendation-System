@@ -9,22 +9,21 @@ st.title("Movie Recommendation System")
 
 
 # Loading movies dataframe
-with open("movies.pkl",'rb') as m:
-    movies = pickle.load(m)
+df = pd.read_pickle("movies.pkl")
 
 similarity=joblib.load('similarity.joblib')
 
-st.write("Movies Shape :", movies.shape)
+st.write("Movies Shape :", df.shape)
 st.write("Similarity Shape :", similarity.shape)
 st.write("Similarity Type :", type(similarity))
-st.write("Movies Columns :", movies.columns)
+st.write("Movies Columns :", df.columns)
 
-movies_name = movies['title'].values
+movies_name = df['title'].values
 
 # Recommendation Function
 def recommend(movie):
 
-    movie_index = movies[movies['title']==movie].index[0]
+    movie_index = df[df['title']==movie].index[0]
 
     recommendations = similarity[movie_index]
 
@@ -36,7 +35,7 @@ def recommend(movie):
 
     for i in movie_list:
 
-        recommended_movies.append(movies.iloc[i[0]].title)
+        recommended_movies.append(df.iloc[i[0]].title)
 
     return recommended_movies
 
