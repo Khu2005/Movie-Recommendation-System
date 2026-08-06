@@ -9,7 +9,7 @@ st.title("Movie Recommendation System")
 
 
 # Loading movies dataframe
-with open("movies.pickle",'rb') as m:
+with open("movies.pkl",'rb') as m:
     movies = pickle.load(m)
 
 similarity=joblib.load('similarity.joblib')
