@@ -1,101 +1,61 @@
 import streamlit as st
-import pandas as pd
-import string
 import nltk
-from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+import sklearn
+import pandas as pd
+import pickle
+import joblib
+
+st.title("Movie Recommendation System")
 
 
-nltk.download('stopwords')
+# Loading movies dataframe
+with open("movies.pickle",'rb') as m:
+    movies = pickle.load(m)
 
-df = pd.read_csv("imdb_top_1000.csv")
+similarity=joblib.load('similarity.joblib')
 
-print("Dataset Loaded Successfully")
-print(df.head())
+st.write("Movies Shape :", movies.shape)
+st.write("Similarity Shape :", similarity.shape)
+st.write("Similarity Type :", type(similarity))
+st.write("Movies Columns :", movies.columns)
 
-df['Overview'] = df['Overview'].fillna('')
+movies_name = movies['title'].values
 
-stop_words = set(stopwords.words('english'))
-
-def convert_to_lowercase(text):
-    return text.lower()
-
-def remove_punctuation(text):
-    return text.translate(str.maketrans('', '', string.punctuation))
-
-def remove_stopwords(text):
-    words = text.split()
-    words = [word for word in words if word not in stop_words]
-    return " ".join(words)
-
-df['clean_text'] = df['Overview'].apply(convert_to_lowercase)
-df['clean_text'] = df['clean_text'].apply(remove_punctuation)
-df['clean_text'] = df['clean_text'].apply(remove_stopwords)
-
-print("Text Preprocessing Completed")
-
-tfidf = TfidfVectorizer(max_features=5000, ngram_range=(1,2))
-tfidf_matrix = tfidf.fit_transform(df['clean_text'])
-
-print("TF-IDF Matrix Shape:", tfidf_matrix.shape)
-
-cosine_sim = cosine_similarity(tfidf_matrix)
-
-print("Cosine Similarity Matrix Shape:", cosine_sim.shape)
-
+# Recommendation Function
 def recommend(movie):
 
-    if movie not in df['Series_Title'].values:
-        return ["Movie not found"]
+    movie_index = movies[movies['title']==movie].index[0]
 
-    movie_index = df[df['Series_Title'] == movie].index[0]
+    recommendations = similarity[movie_index]
 
-    similarity = list(enumerate(cosine_sim[movie_index]))
-
-    similarity = sorted(similarity, key=lambda x: x[1], reverse=True)
-
-    similarity = similarity[1:6]
-
-    recommended = []
-
-    for i in similarity:
-        recommended.append(df.iloc[i[0]].Series_Title)
-
-    return recommended
+    movie_list = sorted(list(enumerate(recommendations)),reverse=True,key=lambda x:x[1])[1:6]
 
 
-print("\nTesting Recommendation Function")
+    recommended_movies = []
 
-print("\nThe Dark Knight")
-print(recommend("The Dark Knight"))
 
-print("\nTitanic")
-print(recommend("Titanic"))
+    for i in movie_list:
 
-print("\nAvatar")
-print(recommend("Avatar"))
+        recommended_movies.append(movies.iloc[i[0]].title)
+
+    return recommended_movies
 
 
 
-st.title("🎬 Movie Recommendation System")
+# Dropdown Menu
+name_movies = st.selectbox("Enter the Movie Name",movies_name)
 
-st.write("Select a movie to get similar movie recommendations.")
 
-selected_movie = st.selectbox(
-    "Select Movie",
-    sorted(df['Series_Title'].unique())
-)
-
+# Button
 if st.button("Recommend"):
 
-    movies = recommend(selected_movie)
+    try:
+        recommendations = recommend(name_movies)
 
-    if movies[0] == "Movie not found":
-        st.error("Movie not found in the dataset.")
+        st.write("### Recommended Movies")
 
-    else:
-        st.subheader("Top 5 Recommended Movies")
+        for movie in recommendations:
+            st.write(movie)
 
-        for i in range(len(movies)):
-            st.write(f"{i+1}. {movies[i]}")
+    except Exception as e:
+        st.error(e)
