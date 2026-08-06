@@ -18,12 +18,12 @@ st.write("Similarity Shape :", similarity.shape)
 st.write("Similarity Type :", type(similarity))
 st.write("Movies Columns :", df.columns)
 
-movies_name = df['title'].values
+movies_name = df["Series_Title"].values
 
 # Recommendation Function
 def recommend(movie):
 
-    movie_index = df[df['title']==movie].index[0]
+    movie_index = df[df['Series_Title']==movie].index[0]
 
     recommendations = similarity[movie_index]
 
