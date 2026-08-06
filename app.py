@@ -9,7 +9,7 @@ st.title("Movie Recommendation System")
 
 
 # Loading movies dataframe
-df = pd.read_pickle("movies.pkl")
+df = pd.read_csv("imdb_top_1000.csv")
 
 similarity=joblib.load('similarity.joblib')
 
