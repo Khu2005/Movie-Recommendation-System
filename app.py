@@ -2,7 +2,6 @@ import streamlit as st
 import nltk
 import sklearn
 import pandas as pd
-import pickle
 import joblib
 
 st.title("Movie Recommendation System")
