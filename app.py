@@ -13,10 +13,10 @@ df = pd.read_csv("imdb_top_1000.csv")
 
 similarity=joblib.load('similarity.joblib')
 
-st.write("Movies Shape :", df.shape)
-st.write("Similarity Shape :", similarity.shape)
-st.write("Similarity Type :", type(similarity))
-st.write("Movies Columns :", df.columns)
+#st.write("Movies Shape :", df.shape)
+#st.write("Similarity Shape :", similarity.shape)
+#st.write("Similarity Type :", type(similarity))
+#st.write("Movies Columns :", df.columns)
 
 movies_name = df["Series_Title"].values
 
